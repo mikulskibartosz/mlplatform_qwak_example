@@ -56,25 +56,6 @@ class LondonBikeSharePrediction(QwakModelInterface):
         print('the best cross validation RMSE is :{}'.format(np.max(cv_data["test-RMSE-mean"])))
         qwak.log_metric({"val_rmse" : np.max(cv_data["test-RMSE-mean"])})
 
-    def schema(self):
-        entity_id = Entity(name='london_bike_sharing', type=str)
-        model_schema = ModelSchema(
-            entities=[entity_id],
-            features=[
-                BatchFeature(entity=entity_id, name='london_bike_sharing.wind_speed'),
-                BatchFeature(entity=entity_id, name='london_bike_sharing.t1'),
-                BatchFeature(entity=entity_id, name='london_bike_sharing.t2'),
-                BatchFeature(entity=entity_id, name='london_bike_sharing.hum'),
-                BatchFeature(entity=entity_id, name='london_bike_sharing.weather_code'),
-                BatchFeature(entity=entity_id, name='london_bike_sharing.season'),
-                BatchFeature(entity=entity_id, name='london_bike_sharing.is_holiday'),
-                BatchFeature(entity=entity_id, name='london_bike_sharing.is_weekend')
-            ],
-            predictions=[
-                Prediction(name='cnt', type=int)
-            ])
-        return model_schema
-
     @qwak.analytics()
     def predict(self, df) -> pd.DataFrame:
         return pd.DataFrame(self.model.predict(df))
